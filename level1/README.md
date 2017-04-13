@@ -1,7 +1,7 @@
 try! React.js Koans
 ========================
 
-※ 今までの流れでnpmなどはインストール済とします
+こちらは[React.js Koans](https://github.com/arkency/reactjs_koans) の各課題を抜粋し、日本語訳したものです。
 
 
 
