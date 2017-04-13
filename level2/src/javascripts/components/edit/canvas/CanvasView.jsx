@@ -22,6 +22,8 @@ export default class CanvasView extends React.Component {
   }
 
   componentDidUpdate(){
+
+    console.log(this.props)
     var canvas = this.state.canvas
     var self = this
 
