@@ -8,6 +8,7 @@ export default class SliderView extends React.Component {
 
   constructor(props) {
     super(props)
+
   }
 
   render(){
@@ -24,6 +25,7 @@ export default class SliderView extends React.Component {
       <div className="slider">
         <Slider
           onChange={this._onChangeValue}
+          onDragStop={this._onDragStop}
           min={this.props.sliderValues.min}
           max={this.props.sliderValues.max}
           defaultValue={defaultValue}
@@ -34,7 +36,11 @@ export default class SliderView extends React.Component {
   }
 
   _onChangeValue = (e,value) => {
-    AppActions.updateCanvas(this.props.sliderValues.type,value)
+    this.setState({ slider_value : value })
+  }
+
+  _onDragStop = (e) => {
+  	AppActions.updateCanvas(this.props.sliderValues.type,this.state.slider_value)
   }
 
 }
