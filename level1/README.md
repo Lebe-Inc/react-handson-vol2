@@ -1,7 +1,7 @@
 try! React.js Koans
 ========================
 
-こちらは[React.js Koans](https://github.com/arkency/reactjs_koans) の各課題を抜粋し、日本語訳したものです。
+このドキュメントは[React.js Koans](https://github.com/arkency/reactjs_koans) の各課題を抜粋し、日本語訳したものです。
 
 
 
