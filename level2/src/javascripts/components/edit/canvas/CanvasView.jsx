@@ -1,11 +1,14 @@
 import React from "react"
 
+var image = new Image
+image.waitTime = 100
+
 export default class CanvasView extends React.Component {
 
   constructor(props){
     super(props)
     this.state = {
-      canvas: null
+      canvas: null,
     }
   }
 
@@ -49,21 +52,36 @@ export default class CanvasView extends React.Component {
   }
 
   _resetCanvas = (canvas) => {
-    if(canvas.getContext){
-      var ctx = canvas.getContext("2d")
-      var image = new Image();
-      image.src = this.props.dataUrl
-      var dstWidth = image.width,
-          dstHeight = image.height
-        
-      if(image.width >= 640){
-        dstWidth = 640
-        dstHeight = Math.round(dstWidth / image.width * image.height)
-      }
-      canvas.width = dstWidth
-      canvas.height = dstHeight
-      ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
-    }
+      
+	
+	var self = this
+
+	image.onload = function(){
+		setTimeout(function(){
+			self._drawCanvas(image,canvas)
+			image.waitTime = 1
+		}, image.waitTime)
+	}
+
+	image.src = this.props.dataUrl
+     
+  }
+
+  _drawCanvas = (image,canvas) => {
+
+  	var ctx = canvas.getContext("2d")
+
+	var dstWidth = image.width,
+	  dstHeight = image.height
+
+	if(image.width >= 640){
+		dstWidth = 640
+		dstHeight = Math.round(dstWidth / image.width * image.height)
+	}
+	canvas.width = dstWidth
+	canvas.height = dstHeight
+	ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
+
   }
 
 }
