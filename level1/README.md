@@ -202,12 +202,211 @@ render() {
 
 ## 5-1 リスト
 
+- `exercises/05-Challenge-GroceryList-part-1.jsx` を編集します
+- `render()`メソッドを完成させてください
+	- Task1. `groceriesComponents`を出力出来るようにしてください
+	- Task2. `GroceryListItem`コンポーネントを完成させてください。親のコンポーネントから渡されたpropsから、商品名（`name`）を出力してください
+
+### ループの処理について
+
+```
+let groceriesComponents = [];
+for(var index = 0; index < this.state.groceries.length; index++) {
+  groceriesComponents.push(
+      <GroceryListItem
+        grocery={this.state.groceries[index]}
+      />
+  );
+}
+```
+
+ループして1件毎に`<GroceryListItem>`を作成するコードが準備されています。
+
+
+![](./images/blank.png)
+
+
+## 回答 5-1 リスト
+
+```
+return (
+  <div>
+    { groceriesComponents }
+  </div>
+);
+```
+
+```
+return (
+    <li>
+      { this.props.grocery.name }
+    </li>
+);
+```
+
+
+![](./images/blank.png)
 
 
 
+## 5-2 買い物を追加する
+
+- `exercises/05-Challenge-GroceryList-part-2.jsx` を編集します
+- Task1. 商品名を追加するための`<input>`を出力してください
+- Task2. `Add new Product`ボタンを出力してください
+- Task3. `Add new Product`を押した時に`addGroceryItem()`を呼び出してください
+- Task4. `addGroceryItem()`を完成させてください。`<input>`が空の時は追加しないようにしてください。
+- Task5. `addGroceryItem()`をした時に`<input>`が空になるようにしてください
+
+
+![](./images/blank.png)
+
+
+## 回答 5-2 買い物を追加する
+
+``` 
+//Task1. 商品名を追加するための`<input>`を出力してください
+//Task2. `Add new Product`ボタンを出力してください
+return (
+      <div>
+        <ul>
+          {groceriesComponents}
+        </ul>
+      </div>
+
+      {newProductInput}
+      {newProductAddButton}
+    );
+```
+
+```
+//Task3. `Add new Product`を押した時に`addGroceryItem()`を呼び出してください
+newProductAddButton = <button className='add-product' 
+	onClick={this.addGroceryItem}>Add new Product</button>;
+```
+
+```
+//Task4 `addGroceryItem()`を完成させてください。
+addGroceryItem() {
+    
+	if(this.state.newGroceryName){
+		this.setState({ 
+			groceries : this.state.groceries.concat({ name : this.state.newGroceryName }),
+			newGroceryName : ""
+		})
+	}
+
+}
+```
+
+```
+//Task5. `addGroceryItem()`をした時に`<input>`が空になるようにしてください
+newProductInput = <input className='new-item' type="text" 
+onChange={this.inputChanged} value={this.state.newGroceryName} />;
+```
+
+![](./images/blank.png)
+
+## 5-3 お買い物リストを空にする
+
+- `exercises/05-Challenge-GroceryList-part-3.jsx` を編集します
+- Task1. お買い物リストを空にするためのボタン（clearListButton）を出力してください。
+- Task2. `clearList()`を完成させてください。
+
+
+![](./images/blank.png)
+
+
+## 回答 5-3 お買い物リストを空にする
+
+```
+//Task1
+return (
+  <div>
+    <ul>
+      {groceriesComponents}
+    </ul>
+    {newProductInput}
+    {newProductAddButton}
+    {clearListButton}
+  </div>
+);
+```
+
+```
+//Task2
+clearList() {
+	this.setState({ groceries : []})
+}
+```
+
+![](./images/blank.png)
+
+
+## 5-4 お買い物完了機能を作る
+
+- `exercises/05-Challenge-GroceryList-part-4.jsx` を編集します
+- Task. `toggleGroceryCompleteness()`メソッドを完成させてください
 
 
 
+![](./images/blank.png)
 
 
+## 回答 5-4 お買い物完了機能を作る
+
+```
+toggleGroceryCompleteness(groceryIndex) {
+	var groceries = this.state.groceries;
+	groceries[groceryIndex].completed = !groceries[groceryIndex].completed;
+	this.setState({ groceries: groceries});
+}
+```
+
+![](./images/blank.png)
+
+## 課題6 Reactの機能を理解するその１
+
+- `exercises/06-RenderComponent.jsx` を編集します
+- `renderNameComponent()`を完成させて、Reactのコンポーネントを自分で表示させてみましょう。
+
+![](./images/blank.png)
+
+## 回答 課題6 
+
+```
+function renderNameComponent(domNode) {
+  React.render(React.createElement(Name), domNode)
+}
+```
+
+![](./images/blank.png)
+
+## 課題7 Reactの機能を理解するその２
+
+- `exercises/07-LifecycleMethods.js.jsx` を編集します
+- コンポーネントのライフサイクル（生成、表示などのイベント順）のメソッドがいくつかあることを理解してください。
+	- 1. `componentDidMount()` コンポーネントが設置された
+	- 2. `componentDidUpdate()` コンポーネントの値が書き換わった
+	- 3. `componentWillUnmount()` コンポーネントが除去された
+
+![](./images/blank.png)
+
+## 回答 課題7 Reactの機能を理解するその２
+
+```
+componentDidMount() {
+	console.log("I'm mounted!");
+}
+
+componentDidUpdate(prevProps, prevState) {
+	console.log("Updated!");
+}
+
+componentWillUnmount() {
+	console.log("Goodbye, cruel world! :(");
+}
+```
+
+![](./images/blank.png)
 
