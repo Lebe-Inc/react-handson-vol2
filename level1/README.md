@@ -1,7 +1,7 @@
 try! React.js Koans
 ========================
 
-※ 今までの流れでnpmなどはインストール済とします
+こちらは[React.js Koans](https://github.com/arkency/reactjs_koans) の各課題を抜粋し、日本語訳したものです。
 
 
 
@@ -56,7 +56,7 @@ npm run test
 
 ## 課題1 Hello World
 
-- `exercises/01-HelloWorld.jsx` を編集します
+- [exercises/01-HelloWorld.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/01-HelloWorld.jsx) を編集します
 - `<span>`タグを利用して`Hello World`という文字列を出力してください
 
 ![](./images/blank.png)
@@ -88,7 +88,7 @@ npm run test
 
 ## 課題2 リスト
 
-- `exercises/002-PartiesList.jsx` を編集します
+- [exercises/02-PartiesList.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/02-PartiesList.jsx) を編集します
 - `<ul>`の子要素`<li>`を足して下さい（テキストは何でも可）
 - `<ul>`を`<ul class="parties-list">`と出力されるようにして下さい
 
@@ -123,7 +123,7 @@ npm run test
 
 ここから1つの課題の中に複数のTaskがあります。
 
-- `exercises/03-WhatsYourName.jsx` を編集します
+- [exercises/03-WhatsYourName.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/03-WhatsYourName.jsx) を編集します
 - Task1
 	- `<input>`に入力された値を`state.name`に代入する関数「`onNameChange`」を完成させてください
 	- *Point* stateを更新には`setState`関数を使います
@@ -170,7 +170,7 @@ render() {
 
 今までの内容を復習するためのクイズです。
 
-- `exercises/04-Quiz.jsx` を編集します
+- [exercises/04-Quiz.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/04-Quiz.jsx) を編集します
 - Task1. Reactのコンポーネントは全てあるクラスを拡張して作成されます。クラス名を入力してください。
 	- ヒント 今までの課題を見てください
 - Task2. JSXファイルは全てJavaScriptに変換される？`true`か`false`で答えてください
@@ -202,12 +202,210 @@ render() {
 
 ## 5-1 リスト
 
+- [exercises/05-Challenge-GroceryList-part-1.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/05-Challenge-GroceryList-part-1.jsx) を編集します
+- `render()`メソッドを完成させてください
+	- Task1. `groceriesComponents`を出力出来るようにしてください
+	- Task2. `GroceryListItem`コンポーネントを完成させてください。親のコンポーネントから渡されたpropsから、商品名（`name`）を出力してください
+
+### ループの処理について
+
+```
+let groceriesComponents = [];
+for(var index = 0; index < this.state.groceries.length; index++) {
+  groceriesComponents.push(
+      <GroceryListItem
+        grocery={this.state.groceries[index]}
+      />
+  );
+}
+```
+
+ループして1件毎に`<GroceryListItem>`を作成するコードが準備されています。
+
+
+![](./images/blank.png)
+
+
+## 回答 5-1 リスト
+
+```
+return (
+  <div>
+    { groceriesComponents }
+  </div>
+);
+```
+
+```
+return (
+    <li>
+      { this.props.grocery.name }
+    </li>
+);
+```
+
+
+![](./images/blank.png)
 
 
 
+## 5-2 買い物を追加する
+
+- [exercises/05-Challenge-GroceryList-part-2.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/05-Challenge-GroceryList-part-2.jsx) を編集します
+- Task1. 商品名を追加するための`<input>`を出力してください
+- Task2. `Add new Product`ボタンを出力してください
+- Task3. `Add new Product`を押した時に`addGroceryItem()`を呼び出してください
+- Task4. `addGroceryItem()`を完成させてください。`<input>`が空の時は追加しないようにしてください。
+- Task5. `addGroceryItem()`をした時に`<input>`が空になるようにしてください
+
+
+![](./images/blank.png)
+
+
+## 回答 5-2 買い物を追加する
+
+``` 
+//Task1. 商品名を追加するための`<input>`を出力してください
+//Task2. `Add new Product`ボタンを出力してください
+return (
+      <div>
+        <ul>
+          {groceriesComponents}
+        </ul>
+      </div>
+
+      {newProductInput}
+      {newProductAddButton}
+    );
+```
+
+```
+//Task3. `Add new Product`を押した時に`addGroceryItem()`を呼び出してください
+newProductAddButton = <button className='add-product' 
+	onClick={this.addGroceryItem}>Add new Product</button>;
+```
+
+```
+//Task4 `addGroceryItem()`を完成させてください。
+addGroceryItem() {
+    
+	if(this.state.newGroceryName){
+		this.setState({ 
+			groceries : this.state.groceries.concat({ name : this.state.newGroceryName }),
+			newGroceryName : ""
+		})
+	}
+
+}
+```
+
+```
+//Task5. `addGroceryItem()`をした時に`<input>`が空になるようにしてください
+newProductInput = <input className='new-item' type="text" 
+onChange={this.inputChanged} value={this.state.newGroceryName} />;
+```
+
+![](./images/blank.png)
+
+## 5-3 お買い物リストを空にする
+
+- [exercises/05-Challenge-GroceryList-part-3.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/05-Challenge-GroceryList-part-3.jsx) を編集します
+- Task1. お買い物リストを空にするためのボタン（clearListButton）を出力してください。
+- Task2. `clearList()`を完成させてください。
+
+
+![](./images/blank.png)
+
+
+## 回答 5-3 お買い物リストを空にする
+
+```
+//Task1
+return (
+  <div>
+    <ul>
+      {groceriesComponents}
+    </ul>
+    {newProductInput}
+    {newProductAddButton}
+    {clearListButton}
+  </div>
+);
+```
+
+```
+//Task2
+clearList() {
+	this.setState({ groceries : []})
+}
+```
+
+![](./images/blank.png)
+
+
+## 5-4 お買い物完了機能を作る
+
+- [exercises/05-Challenge-GroceryList-part-4.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/05-Challenge-GroceryList-part-4.jsx) を編集します
+- Task. `toggleGroceryCompleteness()`メソッドを完成させてください
 
 
 
+![](./images/blank.png)
 
+
+## 回答 5-4 お買い物完了機能を作る
+
+```
+toggleGroceryCompleteness(groceryIndex) {
+	var groceries = this.state.groceries;
+	groceries[groceryIndex].completed = !groceries[groceryIndex].completed;
+	this.setState({ groceries: groceries});
+}
+```
+
+![](./images/blank.png)
+
+## 課題6 Reactの機能を理解するその１
+
+- [exercises/06-RenderComponent.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/06-RenderComponent.jsx) を編集します
+- `renderNameComponent()`を完成させて、Reactのコンポーネントを自分で表示させてみましょう。
+
+![](./images/blank.png)
+
+## 回答 課題6 
+
+```
+function renderNameComponent(domNode) {
+  React.render(React.createElement(Name), domNode)
+}
+```
+
+![](./images/blank.png)
+
+## 課題7 Reactの機能を理解するその２
+
+- [exercises/07-LifecycleMethods.js.jsx](https://github.com/arkency/reactjs_koans/blob/master/koans/07-LifecycleMethods.js.jsx) を編集します
+- コンポーネントのライフサイクル（生成、表示などのイベント順）のメソッドがいくつかあることを理解してください。
+	- 1. `componentDidMount()` コンポーネントが設置された
+	- 2. `componentDidUpdate()` コンポーネントの値が書き換わった
+	- 3. `componentWillUnmount()` コンポーネントが除去された
+
+![](./images/blank.png)
+
+## 回答 課題7 Reactの機能を理解するその２
+
+```
+componentDidMount() {
+	console.log("I'm mounted!");
+}
+
+componentDidUpdate(prevProps, prevState) {
+	console.log("Updated!");
+}
+
+componentWillUnmount() {
+	console.log("Goodbye, cruel world! :(");
+}
+```
 
 
