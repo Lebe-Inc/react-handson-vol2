@@ -94,7 +94,8 @@ Fluxでは`actions`,`store`,`components`,`dispatcher`の4つから構成され�
 
 まずは基礎となる`app.js`を作っていきます。
 
-```app.js
+```
+// app.js
 import "../stylesheets/style.scss"
 import React from "react"
 import { render } from "react-dom"
@@ -118,7 +119,8 @@ cssを一緒にwebpackへ混ぜてしまうので、scssファイルをインポ
 
 次に、繋ぎをしてくれる**dispatcher**を作っていきます。
 
-```AppDispatcher.js
+```
+// AppDispatcher.js
 import {Dispatcher} from "flux"
 export default new Dispatcher()
 ```
@@ -127,7 +129,8 @@ export default new Dispatcher()
 
 次に、アプリケーション内のイベントを定義しておくための**constants**をつくります。
 
-```AppConstants.js
+```
+// AppConstants.js
 import keyMirror from "keymirror"
 
 var AppConstants = keyMirror({
@@ -148,7 +151,8 @@ export default AppConstants
 
 続いて、**action**をつくっていきます。
 
-```AppActions.js
+```
+// AppActions.js
 import AppDispatcher from "../dispatcher/AppDispatcher"
 import AppConstants from "../constants/AppConstants"
 
@@ -221,7 +225,8 @@ export default AppActions
 
 まず大元である`App.jsx`を作っていきます。
 
-```App.jsx
+```
+// App.jsx
 import React from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
@@ -259,7 +264,8 @@ export default class App exntends React.Component {
 
 まずはインポートするものです。
 
-```components/upload/UploadView.jsx
+```
+// components/upload/UploadView.jsx
 import React from "react"
 import RaisedButton from 'material-ui/RaisedButton'
 import {white,pinkA400,indigoA200} from 'material-ui/styles/colors'
@@ -274,7 +280,8 @@ import AppActions from "../../actions/AppActions"
 
 次に展開するHTML自体を書いていきます。
 
-```components/upload/UploadView.jsx
+```
+// components/upload/UploadView.jsx
 export default class UploadView extends React.Component{
 
   render(){
@@ -308,7 +315,8 @@ export default class UploadView extends React.Component{
 
 ではこの`onChange`で呼ばれるメソッドを実装していきましょう。
 
-```components/upload/UploadView.jsx
+```
+// components/upload/UploadView.jsx
 _onUploaded = e => {
   var fileData = e.target.files[0]
   
@@ -333,7 +341,8 @@ _onUploaded = e => {
 
 `App.jsx`を書き換えます。
 
-```components/App.jsx
+```
+// components/App.jsx
 import UploadView from "./upload/UploadView.jsx"
 ```
 
@@ -341,7 +350,8 @@ import UploadView from "./upload/UploadView.jsx"
 
 次に、`renderView`に`<h1>Hello World</h1>`がはいってたと思いますが、そこにこの`<UploadView/>`を代入します。
 
-```components/App.jsx
+```
+// components/App.jsx
 renderView = <UploadView/>
 ```
 
