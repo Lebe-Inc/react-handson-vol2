@@ -7,7 +7,7 @@ export default class CanvasView extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      canvas: null,
+      canvas: null
     }
   }
 
@@ -22,7 +22,6 @@ export default class CanvasView extends React.Component {
 
   componentDidUpdate(){
 
-    console.log(this.props)
     var canvas = this.state.canvas
     var self = this
 
@@ -52,43 +51,40 @@ export default class CanvasView extends React.Component {
     )
   }
 
-  _resetCanvas = (canvas) => {
-      
+  _resetCanvas = (canvas) => {      
 	
-	var self = this
+  	var self = this
 
-	if(!image || image.width < 1){
-		image = new Image
+  	if(!image || image.width < 1){
+  		image = new Image
 
-		image.onload = function(){
-			setTimeout(function(){
-				self._drawCanvas(image,canvas)
-			}, 100)
-		}
-		image.src = this.props.dataUrl
-		return
+  		image.onload = function(){
+  			setTimeout(function(){
+  				self._drawCanvas(image,canvas)
+  			}, 100)
+  		}
+  		image.src = this.props.dataUrl
+  		return
+  	}
 
-	}
-
-	self._drawCanvas(image,canvas)
+    this._drawCanvas(image,canvas)
      
   }
 
   _drawCanvas = (image,canvas) => {
 
-  	var ctx = canvas.getContext("2d")
+  	var
+      ctx = canvas.getContext("2d"),
+      dstWidth = image.width,
+      dstHeight = image.height
 
-	var dstWidth = image.width,
-	  dstHeight = image.height
-
-	if(image.width >= 640){
-		dstWidth = 640
-		dstHeight = Math.round(dstWidth / image.width * image.height)
-	}
-	canvas.width = dstWidth
-	canvas.height = dstHeight
-	ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
-
+    if(image.width >= 640){
+      dstWidth = 640
+      dstHeight = Math.round(dstWidth / image.width * image.height)
+    }
+    canvas.width = dstWidth
+    canvas.height = dstHeight
+    ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
   }
 
 }
