@@ -156,3 +156,4 @@ typings/
 level2/dist/**
 !level2/dist/index.html
 !level2/dist/lib/
+!level2/dist/images/

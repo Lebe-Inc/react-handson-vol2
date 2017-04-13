@@ -33,7 +33,7 @@ export default class ShareView extends React.Component{
       url = "https://sha.connpass.com/event/53105/",
       hashtags = "reactTwoHourHandson"
 
-    window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=800, height=400, menubar=no, toolbar=no, scrollbars=yes")
+    window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
   }
 
 }
