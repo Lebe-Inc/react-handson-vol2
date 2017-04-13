@@ -9,7 +9,7 @@ export default class EditItem extends React.Component{
       <li className="grid-item" onClick={this._onSelect}>
         <p className="grid-item--title">{this.props.displayEditName}</p>
         <div className="img">
-          <img src="images/icon.png"/>
+          <img src={"images/"+ this.props.type +".png"}/>
         </div>
       </li>
     )
