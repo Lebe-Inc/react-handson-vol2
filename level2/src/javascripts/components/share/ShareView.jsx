@@ -23,6 +23,7 @@ export default class ShareView extends React.Component{
           <img src={this.props.shareImage}/>
         </div>
         <RaisedButton label="SHARE" primary={true} className="share-button" onClick={this._share}/>
+        <RaisedButton label="もう一度" secondary={true} className="share-button" onClick={this._reload}/>
       </div>
     )
   }
@@ -34,6 +35,10 @@ export default class ShareView extends React.Component{
       hashtags = "reactTwoHourHandson"
 
     window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
+  }
+
+  _reload = () => {
+    window.location.reload()
   }
 
 }
