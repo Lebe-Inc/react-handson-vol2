@@ -7,8 +7,6 @@ import ShareView from "./share/ShareView.jsx"
 
 import AppStore from "../store/AppStore"
 
-import AppBar from 'material-ui/AppBar'
-
 var getAll = () => {
   return AppStore.getAll()
 }
