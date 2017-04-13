@@ -53,11 +53,13 @@ npm run test
 課題内容と結果が表示されます。
 
 
+
 ## 課題1 Hello World
 
 - `exercises/01-HelloWorld.jsx` を編集します
 - `<span>`タグを利用して`Hello World`という文字列を出力してください
 
+![](./images/blank.png)
 　
 ## 回答 課題1 Hello World
 
@@ -81,6 +83,8 @@ npm run test
 ~~~
 
 
+![](./images/blank.png)
+
 
 ## 課題2 リスト
 
@@ -88,7 +92,7 @@ npm run test
 - `<ul>`の子要素`<li>`を足して下さい（テキストは何でも可）
 - `<ul>`を`<ul class="parties-list">`と出力されるようにして下さい
 
-
+![](./images/blank.png)
 
 ## 回答　課題2 リスト
 
@@ -110,6 +114,7 @@ npm run test
 > *Point*「class」属性を出力するには「className」属性を書き換える必要があります
 
 
+![](./images/blank.png)
 
 
 ## 課題3 What's your name
@@ -128,8 +133,9 @@ npm run test
 	- 名前が入力された時だけ挨拶「`Hello 名前`」が出力されるようにしてください
 
 
-## 回答　課題3 What's your name
+![](./images/blank.png)
 
+## 回答　課題3 What's your name
 
 
 ```
@@ -158,7 +164,7 @@ render() {
     );
 }
 ```
-
+![](./images/blank.png)
 
 ## 課題4 Quiz
 
@@ -174,16 +180,7 @@ render() {
 - Task6. `state`の値を変更する関数はなんですか？関数名を答えてください
 - Task7. コンポーネントの各メソッドは`this`にbindする必要がありますか？`true`か`false`で答えてください
 
-
-
-
-
-
-
-
-
-
-
+![](./images/blank.png)
 
 ## 回答 課題4 Quiz
 
@@ -194,6 +191,8 @@ render() {
 - Task5 false
 - Task6 setState
 - Task7 true
+
+![](./images/blank.png)
 
 
 ## 課題5 GroceryList
