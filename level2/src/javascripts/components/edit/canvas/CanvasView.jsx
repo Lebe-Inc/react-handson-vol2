@@ -1,7 +1,6 @@
 import React from "react"
 
-var image = new Image
-image.waitTime = 100
+var image
 
 export default class CanvasView extends React.Component {
 
@@ -56,14 +55,20 @@ export default class CanvasView extends React.Component {
 	
 	var self = this
 
-	image.onload = function(){
-		setTimeout(function(){
-			self._drawCanvas(image,canvas)
-			image.waitTime = 1
-		}, image.waitTime)
+	if(!image || image.width < 1){
+		image = new Image
+
+		image.onload = function(){
+			setTimeout(function(){
+				self._drawCanvas(image,canvas)
+			}, 100)
+		}
+		image.src = this.props.dataUrl
+		return
+
 	}
 
-	image.src = this.props.dataUrl
+	self._drawCanvas(image,canvas)
      
   }
 
