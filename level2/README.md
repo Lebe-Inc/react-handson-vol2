@@ -789,7 +789,7 @@ render(){
       }
     }
 
-  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+  renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues}/>
   menuText = menuState.sliderMenu
 
   return(...)
