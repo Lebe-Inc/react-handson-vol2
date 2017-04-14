@@ -1008,7 +1008,7 @@ render = <UploadView/>
 
 ```js
 // App.jsx
-var render = null
+var renderView = null
 
 if(this.state.isUploaded){
   renderView = (
