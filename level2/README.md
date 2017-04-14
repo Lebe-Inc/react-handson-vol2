@@ -94,8 +94,7 @@ Fluxでは`actions`,`store`,`components`,`dispatcher`の4つから構成され�
 
 まずは基礎となる`app.js`を作っていきます。
 
-```js
-// app.js
+```app.js
 import "../stylesheets/style.scss"
 import React from "react"
 import { render } from "react-dom"
@@ -119,8 +118,7 @@ cssを一緒にwebpackへ混ぜてしまうので、scssファイルをインポ
 
 次に、繋ぎをしてくれる**dispatcher**を作っていきます。
 
-```js
-// AppDispatcher.js
+```AppDispatcher.js
 import {Dispatcher} from "flux"
 export default new Dispatcher()
 ```
@@ -129,8 +127,7 @@ export default new Dispatcher()
 
 次に、アプリケーション内のイベントを定義しておくための**constants**をつくります。
 
-```js
-// AppConstants.js
+```AppConstants.js
 import keyMirror from "keymirror"
 
 var AppConstants = keyMirror({
@@ -151,8 +148,7 @@ export default AppConstants
 
 続いて、**action**をつくっていきます。
 
-```js
-// AppActions.js
+```AppActions.js
 import AppDispatcher from "../dispatcher/AppDispatcher"
 import AppConstants from "../constants/AppConstants"
 
@@ -225,8 +221,7 @@ export default AppActions
 
 まず大元である`App.jsx`を作っていきます。
 
-```js
-// App.jsx
+```App.jsx
 import React from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
@@ -264,8 +259,7 @@ export default class App exntends React.Component {
 
 まずはインポートするものです。
 
-```js
-// components/upload/UploadView.jsx
+```components/upload/UploadView.jsx
 import React from "react"
 import RaisedButton from 'material-ui/RaisedButton'
 import {white,pinkA400,indigoA200} from 'material-ui/styles/colors'
@@ -280,8 +274,7 @@ import AppActions from "../../actions/AppActions"
 
 次に展開するHTML自体を書いていきます。
 
-```js
-// components/upload/UploadView.jsx
+```components/upload/UploadView.jsx
 export default class UploadView extends React.Component{
 
   render(){
@@ -315,8 +308,7 @@ export default class UploadView extends React.Component{
 
 ではこの`onChange`で呼ばれるメソッドを実装していきましょう。
 
-```js
-// components/upload/UploadView.jsx
+```components/upload/UploadView.jsx
 _onUploaded = e => {
   var fileData = e.target.files[0]
   
@@ -341,8 +333,7 @@ _onUploaded = e => {
 
 `App.jsx`を書き換えます。
 
-```js
-// components/App.jsx
+```components/App.jsx
 import UploadView from "./upload/UploadView.jsx"
 ```
 
@@ -350,8 +341,7 @@ import UploadView from "./upload/UploadView.jsx"
 
 次に、`renderView`に`<h1>Hello World</h1>`がはいってたと思いますが、そこにこの`<UploadView/>`を代入します。
 
-```js
-// components/App.jsx
+```components/App.jsx
 renderView = <UploadView/>
 ```
 
@@ -361,6 +351,287 @@ renderView = <UploadView/>
 
 ## 編集画面を作ろう
 
+では、今回の一番の大御所である編集画面をつくって行きます。
 
+まずこの画面は2つの大きなコンポーネント、`CanvasView`と`Controller`に分かれます。
+
+`CanvasView`はその名の通り、canvasをレンダリングするViewです。
+
+canvasをレンダリングするViewを1つだけにしておくことで、管理がしやすくなります。
+
+もう一つは、`Controller`です。`Controller`は2種類に分かれます。
+
+エフェクトを選択する画面と、スライダーで編集自体をする画面です。
+
+まずは`CanvasView`を作っていきます。
+
+### CanvasViewを作る
+
+`components/edit/canvas/CanvasView.jsx`を編集していきます。
+
+まずインポートを書いていきます。
+
+```js
+// CanvasView.jsx
+import React from "react"
+```
+
+今回はReactだけをインポートします。
+
+このコンポーネントはstateとして、canvasを持ちます。
+
+なのでコンストラクタにcanvasを持たせていきたいと思います。
+
+```js
+// CanvasView.jsx
+export default class CanvasView extends React.Component{
+
+  constructor(props){
+    super(props)
+    this.state = {
+      canvas: null
+    }
+  }
+
+}
+```
+
+次に一番最初にレンダリングをするために、Reactのライフサイクルである`componentDidMount`を使っていきます。
+
+`componentDidMount`は、コンポーネントがレンダリングされる直後に呼ばれます。
+
+```js
+// CanvasView.jsx
+componentDidMount(){
+  var canvas = this.refs.canvas
+  Caman.allowRevert = false
+  
+  this.setState({ canvas: canvas })
+  this._resetCanvas(canvas)
+}
+```
+
+`_resetCanvas`というメソッドがでてきました。
+
+これはHTMLのcanvasを一度キレイにするものです。
+
+では先に、`_resetCavnas`を実装していきたいと思います。
+
+```js
+// CanvasView.jsx
+_resetCanvas = () => {
+
+  var self = this
+  
+  if(!image || image.width < 1){
+    image = new Image
+    image.onload = () => {
+      setTimeout(()=>{
+        self._drawCanvas(image,canvas)
+      }, 100)
+    }
+    image.src = this.props.dataUrl
+    return
+  }
+  
+  this._drawCanvas(image,canvas)
+
+}
+```
+
+最初に`self`に`this`を代入してるのは、コールバックの中でReactの`this`を追えなくなるためです。
+
+`_drawCanvas`は画像自体をcanvasに展開するためのメソッドです。
+
+ifは、一番最初だけ処理をしたりレンダリングに失敗している場合に処理をするために書いています。
+
+ifの中ですが、imageをロードしてその中で`_drawCanvas`を呼んでいますが`setTimeout`をつかって100ミリ秒のウエイトをかけています。
+
+これはブラウザ間でcanavsを構成する順番がシングルスレッドかマルチスレッドかによって、タイミングが変わるので、故意に100ミリ秒のウエイトをかけています。
+
+`image.src`はずっと変わらないので、最初にだけ代入していれば大丈夫です。
+
+では、`_drawCanvas`を実装していきましょう。
+
+```js
+// CanvasView.jsx
+_drawCanvas = (image,canvas) => {
+
+  var
+    ctx = canvas.getContext("2d") 
+    dstWidth = image.width
+    dstHeight = image.height
+    
+  if(image.width > 640){
+    dstWidth = 640
+    dstHeight = Math.round(dstWidth / image.width * image.height)
+  }
+  canvas.width = dstWidth
+  canvas.height = dstHeight
+  ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
+}
+```
+
+ここはReactは関係なく普通にcanvasで画像をレンダリングする処理を書いていきます。
+
+最初にコンテキスト（ctx）をつくって、画像の幅と高さを一度別の変数に代入します。
+
+今回はcanvasでエフェクトをかけていくので、画像があまりに大きいとエフェクトがかかるまで処理が膨大になり重くなってしまいます。なので、幅は640pxより大きいものは640pxに揃えてしまいます。
+
+今回はハンズオンなので、横幅しかみていないので高さがすごい大きな画像を使えばこの`if`を回避することができますが、ただ処理が重くなるだけなので、素直にハンズオンをしましょう。
+
+これで縦横の比を維持したまま、小さいサイズの画像をつくることができました。
+
+この幅と高さを`canvas`自体に教えてあげて、`ctx`をつかって画像をレンダリングします。
+
+### Controllerを作ろう
+
+コントローラー部分をつくって行きます。
+
+`controller`は*スライダー*と*セレクト*の画面を切り替える必要があります。
+
+まずは、*スライダー*を作っていきます。
+
+まずインポートしていきます。
+
+```js
+// SliderView.jsx
+import React from "react"
+import Slider from "material-ui/Slider"
+import AppActions from "../../../../actions/AppActions"
+```
+
+次に`View`を作っていきます。
+
+```js
+// SliderView.jsx
+render(){
+  return(
+    <div>
+      <Slider
+        onChange={this._onChangeValue}
+        onDragStop={this._onDragStop}
+        min={this.props.sliderValues.min}
+        max={this.props.sliderValues.max}
+        defaultValue={defaultValue}
+        step={1}
+      />
+    </div>
+  )
+}
+```
+
+`Slider`自体は`material-ui`の`Slider`コンポーネントを使いました。
+
+このコンポーネントには、エフェクトによってことなるもの（値の幅がhueは0~100からだけど、明るさは-100~100など）があるので
+
+- 最小値
+- 最大値
+- 初期値
+- step値
+
+を追加していかないといけません。
+
+その他に、`onChange`と`onDragStop`があります。
+
+`onChange`は、動かしている間のイベントと新しい値を取得できて、`onDragStop`は動かし終わったあとのイベントが取得出来ます。
+
+`onChange`で値を取得し続け、`onDragStop`で動きが終わったときだけ処理をするようにすることで、毎回canvasをレンダリングし直さないのでスライドが滑らかになります。
+
+それぞれのメソッドは`_onChangeValue`と`_onDragDrop`です。
+
+まず`_onChangeValue`を実装します。
+
+```js
+// SliderView.jsx
+_onChangeValue = (e,value) => {
+  this.setState({ sliderValue: value })
+}
+```
+
+これで、スライダーの値をstateを書き換えてコンポーネントで保持します。
+
+次に`_onDragStop`を作ります
+
+```js
+// SliderView.jsx
+_onDragStop = e => {
+  AppActions.updateCanvas(this.props.sliderValues.type,this.state.sliderValue)
+}
+```
+
+dragStopのときは、今のスライダーの値を**action**へ投げてやればあとはFluxによって勝手にフローしてくれます。
 
 ## シェア画面を作ろう
+
+最後にシェア画面を作っていきます。
+
+シェア画面は、`AppBar`と`img`要素とボタン二つなのでもう簡単ではないかと思います。
+
+まずインポートします。
+
+```js
+// ShareView.jsx
+import React from "react"
+
+import {indigoA200} from 'material-ui/styles/colors'
+import AppBar from "material-ui/AppBar"
+import RaisedButton from 'material-ui/RaisedButton'
+```
+
+今までと、あまり変わらないと思います。
+
+次にView部分を書いていきます。
+
+```js
+// ShareView.jsx
+render(){
+  return(
+    <div>
+      <AppBar
+        title="Filter"
+        iconClassNameLeft="muidocs-icon-navigation-expand-more"
+        iconClassNameRight="muidocs-icon-navigation-expand-more"
+        style={{"backgroundColor": indigoA200}}
+      />
+      <div className="img">
+        <img src={this.props.shareImage}/>
+      </div>
+      <RaisedButton label="SHARE" primary={true} className="share-button" onClick={this._share}/>
+      <RaisedButton label="もう一度" secondary={true} className="share-button" onClick={this._reload}/>
+    </div>
+  )
+}
+```
+
+これがView部分です。
+
+特に変わったところはないですが、`<img/>`の`src`に最終フィルターのかかったcanvasの画像をbase64でエンコードしたものが流れてくるのでそれをプレビューする部分ぐらいです。
+
+`<RaiseButton/>`にイベントが設置してあるので、それを追加していきたいと思います。
+
+```js
+// ShareView.jsx
+_share = () => {
+  var
+    text = "2時間で学ぶReactハンズオンのLavel2をつくりきったよ！",
+    url = "https://sha.connpass.com/event/53105/",
+    hashtags = "reactTwoHourHandson"
+  
+  window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
+}
+
+_reload = () => {
+  window.location.reload()
+}
+```
+
+`_share`というメソッドは、Twitterにシェアするためのボタンです。
+
+埋め込むテキストなどは、自由につくって頂いて結構です！
+
+`_reload`は、もう一度最初からするためのボタンです。
+
+---
+
+これで、Level2ができました！

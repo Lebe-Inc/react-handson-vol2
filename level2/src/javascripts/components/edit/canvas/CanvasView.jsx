@@ -78,7 +78,7 @@ export default class CanvasView extends React.Component {
       dstWidth = image.width,
       dstHeight = image.height
 
-    if(image.width >= 640){
+    if(image.width > 640){
       dstWidth = 640
       dstHeight = Math.round(dstWidth / image.width * image.height)
     }

@@ -8,7 +8,6 @@ export default class SliderView extends React.Component {
 
   constructor(props) {
     super(props)
-
   }
 
   render(){
@@ -39,7 +38,7 @@ export default class SliderView extends React.Component {
     this.setState({ slider_value : value })
   }
 
-  _onDragStop = (e) => {
+  _onDragStop = e => {
   	AppActions.updateCanvas(this.props.sliderValues.type,this.state.slider_value)
   }
 
