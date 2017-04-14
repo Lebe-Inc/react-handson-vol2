@@ -232,13 +232,13 @@ export default AppActions
 import React from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-export default class App exntends React.Component {
+export default class App extends React.Component {
 
   render(){
   
     var renderView = <h1>Hello World</h1>
   
-    reutrn(
+    return(
       <MuiThemeProvider>
         {renderView}
       </MuiThemeProvider>
