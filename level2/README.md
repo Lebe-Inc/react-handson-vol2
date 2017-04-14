@@ -683,7 +683,7 @@ import React from "react"
 
 import AppActions from "../../../../actions/AppActions"
 
-export defualt class EditItem exntends React.Component{
+export default class EditItem extends React.Component{
 
   render(){
     return(
@@ -817,7 +817,7 @@ render(){
   
   if(this.props.ctrlViewType == "select"){
     renderView = <EditListView/>
-    menuText = menuState.defualtMenu
+    menuText = menuState.defaultMenu
   }else{
     renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues} />
     menuText = menuState.sliderViewMenu
