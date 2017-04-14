@@ -21,16 +21,16 @@ URL: https://iotlt.connpass.com/event/55251/
 
 ### 画像を選択するスタート画面
 
-![](file:///Users/kounojunya/Desktop/start.png)
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/upload.png)
 
 ### 画像の編集をする画面
 
-![](file:///Users/kounojunya/Desktop/edit1.png)
-![](file:///Users/kounojunya/Desktop/edit2.png)
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/edit_select.png)
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/edit_slider.png)
 
 ### シェアする画面
 
-![](file:///Users/kounojunya/Desktop/share.png)
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/share.png)
 
 の3つです。
 
