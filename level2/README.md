@@ -491,6 +491,19 @@ _drawCanvas = (image,canvas) => {
 
 この幅と高さを`canvas`自体に教えてあげて、`ctx`をつかって画像をレンダリングします。
 
+では、`canvasView`のレンダリングするcanvas要素を書き足したいと思います。
+
+```js
+// CanvasView.jsx
+render(){
+  return(
+    <canvas id="canvas" ref="canvas"></canvas>
+  )
+}
+```
+
+これがcanvas本体になります。
+
 ### Controllerを作ろう
 
 コントローラー部分をつくって行きます。
@@ -732,25 +745,25 @@ render(){
     <ul className="grid-list">
       <EditItem
         displayEditName="明るさ"
-        type="brightness",
+        type="brightness"
         min={-100}
         max={100}
       />
       <EditItem
         displayEditName="コントラスト"
-        type="contrast",
+        type="contrast"
         min={-100}
         max={100}
       />
       <EditItem
         displayEditName="色合い"
-        type="hue",
+        type="hue"
         min={0}
         max={100}
       />
       <EditItem
         displayEditName="彩度"
-        type="saturation",
+        type="saturation"
         min={-100}
         max={100}
       />
