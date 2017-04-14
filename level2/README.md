@@ -110,7 +110,7 @@ import injectTapEventPlugin from "react-tap-event-plugin"
 injectTapEventPlugin()
 
 import App from "./components/App.jsx"
- 
+
 render(
   <App/>,
   document.getElementById("react")
@@ -235,9 +235,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 export default class App exntends React.Component {
 
   render(){
-  
+
     var renderView = <h1>Hello World</h1>
-  
+
     reutrn(
       <MuiThemeProvider>
         {renderView}
@@ -318,12 +318,12 @@ export default class UploadView extends React.Component{
 ```components/upload/UploadView.jsx
 _onUploaded = e => {
   var fileData = e.target.files[0]
-  
+
   if(!fileData.type.match("image.*")){
     alert("画像を選択してください。")
     return
   }
-  
+
   var reader = new FileReader()
   reader.readAsDataURL(fileData)
   reader.onload = () => {
@@ -412,7 +412,7 @@ export default class CanvasView extends React.Component{
 componentDidMount(){
   var canvas = this.refs.canvas
   Caman.allowRevert = false
-  
+
   this.setState({ canvas: canvas })
   this._resetCanvas(canvas)
 }
@@ -429,7 +429,7 @@ componentDidMount(){
 _resetCanvas = () => {
 
   var self = this
-  
+
   if(!image || image.width < 1){
     image = new Image
     image.onload = () => {
@@ -440,7 +440,7 @@ _resetCanvas = () => {
     image.src = this.props.dataUrl
     return
   }
-  
+
   this._drawCanvas(image,canvas)
 
 }
@@ -465,10 +465,10 @@ ifの中ですが、imageをロードしてその中で`_drawCanvas`を呼んで
 _drawCanvas = (image,canvas) => {
 
   var
-    ctx = canvas.getContext("2d") 
+    ctx = canvas.getContext("2d")
     dstWidth = image.width
     dstHeight = image.height
-    
+
   if(image.width > 640){
     dstWidth = 640
     dstHeight = Math.round(dstWidth / image.width * image.height)
@@ -581,13 +581,13 @@ render(){
   var
     defaultValue = null,
     self = this
-  
+
   Object.keys(this.props.canvasState).map( type => {
     if(self.props.slideValues.type == type){
       defaultValue = self.props.canvasState[type]
     }
   })
-  
+
   return(...)
 }
 ```
@@ -645,10 +645,10 @@ render(){
         sec: "完了"
       }
     }
-    
-  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+
+  renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues}/>
   menuText = menuState.sliderMenu
-  
+
   return(...)
 }
 ```
@@ -788,10 +788,10 @@ render(){
         sec: "完了"
       }
     }
-    
+
   renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
   menuText = menuState.sliderMenu
-  
+
   return(...)
 }
 ```
@@ -814,7 +814,7 @@ render(){
         sec: "完了"
       }
     }
-  
+
   if(this.props.ctrlViewType == "select"){
     renderView = <EditListView/>
     menuText = menuState.defualtMenu
@@ -822,7 +822,7 @@ render(){
     renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues} />
     menuText = menuState.sliderViewMenu
   }
-  
+
   return(...)
 }
 ```
@@ -1086,7 +1086,7 @@ _share = () => {
     text = "2時間で学ぶReactハンズオンのLavel2をつくりきったよ！",
     url = "https://sha.connpass.com/event/53105/",
     hashtags = "reactTwoHourHandson"
-  
+
   window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
 }
 
