@@ -232,13 +232,13 @@ export default AppActions
 import React from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-export default class App exntends React.Component {
+export default class App extends React.Component {
 
   render(){
 
     var renderView = <h1>Hello World</h1>
 
-    reutrn(
+    return(
       <MuiThemeProvider>
         {renderView}
       </MuiThemeProvider>
@@ -696,7 +696,7 @@ import React from "react"
 
 import AppActions from "../../../../actions/AppActions"
 
-export defualt class EditItem exntends React.Component{
+export default class EditItem extends React.Component{
 
   render(){
     return(
@@ -830,7 +830,7 @@ render(){
 
   if(this.props.ctrlViewType == "select"){
     renderView = <EditListView/>
-    menuText = menuState.defualtMenu
+    menuText = menuState.defaultMenu
   }else{
     renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues} />
     menuText = menuState.sliderViewMenu
@@ -1021,7 +1021,7 @@ render = <UploadView/>
 
 ```js
 // App.jsx
-var render = null
+var renderView = null
 
 if(this.state.isUploaded){
   renderView = (
