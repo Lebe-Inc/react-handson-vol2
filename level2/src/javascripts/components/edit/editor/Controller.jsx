@@ -1,5 +1,4 @@
 import React from "react"
-import {GridList} from 'material-ui/GridList'
 
 import SliderView from "./edit/SliderView.jsx"
 import EditListView from "./edit/EditListView.jsx"

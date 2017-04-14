@@ -1,6 +1,13 @@
 # 2時間で学ぶReactハンズオン Level2
 
+[2時間で学ぶReactハンズオン vol2 connpass](https://iotlt.connpass.com/event/55251/)
+
 **Level2ではInstagramのようなフィルターのSPAを作ります。**
+
+```
+このREADMEは、4/14に開催した「2時間で学ぶReactハンズオン vol2」の教材になります。
+URL: https://iotlt.connpass.com/event/55251/
+```
 
 ## 使うライブラリ
 
@@ -562,6 +569,468 @@ _onDragStop = e => {
 
 dragStopのときは、今のスライダーの値を**action**へ投げてやればあとはFluxによって勝手にフローしてくれます。
 
+スライダーの実装としては、編集したら`defaultValue`が変わります。
+
+なのでそこを作っていきます。
+
+`render`メソッドの中で変数を定義していきたいと思います。
+
+```js
+// SliderView.jsx
+render(){
+  var
+    defaultValue = null,
+    self = this
+  
+  Object.keys(this.props.canvasState).map( type => {
+    if(self.props.slideValues.type == type){
+      defaultValue = self.props.canvasState[type]
+    }
+  })
+  
+  return(...)
+}
+```
+
+`defaultValue`に入れるべきは、このsliderのtypeと`canvasState`の任意のものが一致した時なので、`Object.keys`でobjectのkeyだけをmapメソッドでループして使います。
+
+これで`SliderView`が完成しました。
+
+では、`SliderView`をつくったので、先にこれを管理している`Controller.jsx`をつくりたいと思います。
+
+まずはインポートします。ファイルは`components/edit/editor/Controller.jsx`です。
+
+```js
+// Controller.jsx
+import React from "react"
+import SliderView from "./edit/SliderView.jsx"
+
+import AppActions from "../../../actions/AppActions"
+```
+
+先程つくった`SliderView`をインポートしておきます。
+
+ではレンダリング部分を作っていきます。
+
+```js
+// Controller.jsx
+render(){
+  return(
+    <div className="controller">
+      {renderView}
+      <ul>
+        <li onClick={this._onCancel}>{menuText.first}</li>
+        <li onClick={this._onSave}>{menuText.sec}</li>
+      </ul>
+    </div>
+  )
+}
+```
+
+これでコンポーネント自体の作成はできましたが、`renderView`や`menuText`という変数が混ざっています。これらをつくりたいと思います。
+
+```js
+// Controller.jsx
+render(){
+  var
+    renderView = null
+    menuText = {},
+    menuState = {
+      defaultMenu: {
+        first: "Filter",
+        sec: "Edit"
+      },
+      sliderMenu: {
+        first: "キャンセル",
+        sec: "完了"
+      }
+    }
+    
+  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+  menuText = menuState.sliderMenu
+  
+  return(...)
+}
+```
+
+ここまでで、`SliderView`だけをレンダリングする`Controller`コンポーネントを作成できました。
+
+先に、`_onCancel`と`_onSave`をつくってしまいます。
+
+```js
+// Controller.jsx
+_changeCtrlView = () => {
+  AppActions.changeCtlrView("select",null,0,0)
+}
+_onCancel = () => this._changeCtrlView()
+_onSave = () => {
+  AppActions.saveEffect(this.props.currentEdit.type,this.props.currentEdit.value)
+  this._changeCtrlView()
+}
+```
+
+今回は、`Filter`と`Edit`の場合にイベントが無いので、メソッドの名前を`_onCancel`と`_onSave`にしています。
+
+では、エフェクトを選択する画面を作っていきます。
+
+まずエフェクト１つ１つをつくって行きたいと思います。
+
+`components/edit/editor/edit/EditItem.jsx`を編集していきます。
+
+```js
+// EditItem.jsx
+import React from "react"
+
+import AppActions from "../../../../actions/AppActions"
+
+export defualt class EditItem exntends React.Component{
+
+  render(){
+    return(
+      <li className="grid-item" onClick={this._onSelect}>
+        <p className="grid-item--title">{this.props.displayEditName}</p>
+        <div className="img">
+          <img src={"images/"+this.props.type+".png"} />
+        </div>
+      </li>
+    )
+  }
+
+}
+```
+
+これで`<li>`をつかって、アイテム1つ1つができました。
+
+選択されたときに発生する`_onSelect`メソッドを実装します。
+
+```js
+// EditItem.jsx
+_onSelect = e => {
+  e.preventDefault()
+  AppActions.changeCtrl("slider",this.props.type,this.props.min,this.props.max)
+}
+```
+
+クリックされたら、そのアイテムの`type`と`min`と`max`を`slider`と指定して送ります。
+
+それでは、このコンポーネントをラップする`EditListView.jsx`をつくって行きます。
+
+`componnents/edit/editor/edit/EditListView.jsx`を編集しましょう。
+
+```js
+// EditListView.jsx
+import React from "react"
+import EditItem from "./EditItem.jsx"
+```
+
+React本体と、さっきつくった`EditItem`コンポーネントをインポートします。
+
+```js
+// EditListView.jsx
+render(){
+  return(
+    <ul className="grid-list">
+      <EditItem
+        displayEditName="明るさ"
+        type="brightness",
+        min={-100}
+        max={100}
+      />
+      <EditItem
+        displayEditName="コントラスト"
+        type="contrast",
+        min={-100}
+        max={100}
+      />
+      <EditItem
+        displayEditName="色合い"
+        type="hue",
+        min={0}
+        max={100}
+      />
+      <EditItem
+        displayEditName="彩度"
+        type="saturation",
+        min={-100}
+        max={100}
+      />
+    </ul>
+  )
+}
+```
+
+ここまでで、エフェクトのアイテム自体とそれをリスト表示するコンポーネントが完成しました。
+
+さきほどの`Controller.jsx`に追加して、切り替えれるようにしましょう。
+
+まずインポートをしている部分に`EditListView`をインポートしないといけません。
+
+```js
+// Controller.jsx
+import EditListView from "./edit/EditListView.jsx"
+```
+
+次にこの部分を少し書き換えて行きます。
+
+```js
+// Controller.jsx
+render(){
+  var
+    renderView = null
+    menuText = {},
+    menuState = {
+      defaultMenu: {
+        first: "Filter",
+        sec: "Edit"
+      },
+      sliderMenu: {
+        first: "キャンセル",
+        sec: "完了"
+      }
+    }
+    
+  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+  menuText = menuState.sliderMenu
+  
+  return(...)
+}
+```
+
+`renderView`を書き換えていきます。
+
+```js
+// Controller.jsx
+render(){
+  var
+    renderView = null
+    menuText = {},
+    menuState = {
+      defaultMenu: {
+        first: "Filter",
+        sec: "Edit"
+      },
+      sliderMenu: {
+        first: "キャンセル",
+        sec: "完了"
+      }
+    }
+  
+  if(this.props.ctrlViewType == "select"){
+    renderView = <EditListView/>
+    menuText = menuState.defualtMenu
+  }else{
+    renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues} />
+    menuText = menuState.sliderViewMenu
+  }
+  
+  return(...)
+}
+```
+
+これで`ctrlViewType`が`select`か`slider`かによって、レンダリングされるものが書き換わります。
+
+では、いままで作ってた`Controller`と`CanvasView`を連結するラッパーである`EditView.jsx`を作っていきます。
+
+`components/edit/EditView.jsx`を編集していきましょう。
+
+まずインポートしていきます。
+
+```js
+// EditView.jsx
+import React from "react"
+
+import CanvasView from "./canvas/CanvasView.jsx"
+import Controller from "./editor/Controller.jsx"
+
+import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import NavigationChrvronLeft from 'material-ui/svg-icons/navigation/chevron-left'
+import FlatButton from 'material-ui/FlatButton'
+import {white,indigoA200} from 'material-ui/styles/colors'
+
+import AppActions from "../../actions/AppActions"
+```
+
+いままでつくった2つのコンポーネントと、`material-ui`のコンポーネント、**action**をインポートしています。
+
+`View`部分を作っていきます。
+
+```js
+// EditView.jsx
+render(){
+  return(
+    <div>
+      <AppBar
+        title="Filter"
+        iconElementLeft={<IconButton><NavigationChrvronLeft/></IconButton>}
+        onLeftIconButtonTouchTap={this._onBackButtonClick}
+        onRightIconButtonTouchTap={this._onSave}
+        iconElementRight={<FlatButton label="Save" />}
+        style={{"backgroundColor": indigoA200}}
+      />
+      <div className="editView">
+        <CanvasView
+          currentEdit={this.props.currentEdit}
+          canvasState={this.props.canvasState}
+          dataUrl={this.props.dataUrl}
+          isEditing={this.props.ctrlViewType == "slider"}
+        />
+        <Controller
+          currentEdit={this.props.currentEdit}
+          canvasState={this.props.canvasState}
+          sliderValues={this.props.sliderValues}
+          ctrlViewType={this.props.ctrlViewType}
+        />
+      </div>
+    </div>
+  )
+}
+```
+
+これでコンポーネント自体は作成できました。
+
+今回の`AppBar`には、`onLeftIconButtonTouchTap`と`onRightIconButtonTouchTap`というものが実装されています。
+
+これは、文字の通り左右のボタンをクリックしたときの処理になります。
+
+左は、戻る。右は、保存するイベントを発火させたいと思います。
+
+まず`onLeftIconButtonTouchTap`に設定されている`_onBackButtonClick`を実装しましょう。
+
+```js
+// EditView.jsx
+_onBackButtonClick = e => {
+  e.preventDefault()
+  if(confirm("操作を中断しトップページへ戻りますか？")) AppActions.editCancel()
+}
+```
+
+このイベントではcanvasの内容を全て削除しないといけないので、**actions**の`editCancel`を実行します。
+
+では、`onRightIconButtonTouchTap`のほうも実装していきます。
+
+```js
+// EditView.jsx
+_onSave = e => {
+  e.preventDefault()
+  var canvas = document.getElementById("canvas")
+  AppActions.doSave(canvas.toDataURL("image/png"))
+}
+```
+
+saveの場合は、canvasの情報をもとに画像URLを作成して**actions**に渡します。
+
+画像の作成は、canvas自体のメソッドに`toDataURL`というものがあるのでそれを使います。
+
+引数はデータの種類を指定できるので、`image/png`としておきます。
+
+それでは編集画面をつくりきったので`App.jsx`にマージしていきます。
+
+まず必要なものを全てインポートしていきます。
+
+```js
+// App.jsx
+import React from "react"
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+
+import UploadView from "./upload/UploadView.jsx"
+import EditView from "./edit/EditView.jsx"
+
+import AppStore from "../store/AppStore"
+```
+
+次に**store**からデータを取得する関数を実装します。
+
+```js
+// App.jsx
+var getAll = () => {
+  return AppStore.getAll()
+}
+```
+
+これで、`getAll`を実行すれば**store**から全てのデータを取得できます。
+
+ES5でReactを書いたときにはあった`getInitialState`メソッドがES6でかくとなくなるので、自前で実装します。コンストラクタ内に書きましょう。
+
+```js
+// App.jsx
+constructor(){
+  super()
+  this.state = getAll()
+}
+```
+
+`App`コンポーネントは毎回全てのstateを**store**から取得することに成功しました。
+
+次にReactのライフサイクルである`componentDidMount`と`componentWillUnmount`に**store**のイベントリスナーを追加したいと思います。
+
+```js
+// App.jsx
+componentDidMount = () => {
+  if(!(window.File && window.FileReader && window.FileList && window.Blob)){
+    alert("お使いのブラウザではこのアプリケーションは使えません。")
+  }
+  AppStore.addChangeListener(this._onChange)
+}
+
+componentWillUnmount = () => {
+  AppStore.removeChangeListener(this._onChange)
+}
+```
+
+イベントリスナーを設定した時は、このアプリケーションで必要なものがブラウザに実装されているか確認しています。
+
+ここで`_onChange`メソッドを実装していきます。
+
+この`_onChange`メソッドは`App`コンポーネント以下のどこかで**actions**が呼ばれて変更があった場合、毎回呼ばれるメソッドになります。
+
+Fluxパターンでは、なにか変更があれば全てのstateを再度とりにいけばいいので実装は次のようになります。
+
+```js
+// App.jsx
+_onChange = () => {
+  this.setState(getAll())
+}
+```
+
+これで新しくstateに変更された**store**から新しいデータを引き継ぎ、子コンポーネントに流していくようになります。
+
+全てを書き換えているように思えますが、これは`virtual dom`のおかげで負担にならずにすんでいます。
+
+では、つくった`UploadView`と`EditView`を切り替えるように作り直していきます。
+
+```js
+// App.jsx
+render = <UploadView/>
+```
+
+となっている部分を書き換えます。
+
+```js
+// App.jsx
+var render = null
+
+if(this.state.isUploaded){
+  renderView = (
+    <EditView
+      currentEdit={this.state.currentEdit}
+      sliderValues={this.state.sliderValues}
+      canvasState={this.state.canvasState}
+      ctrlViewType={this.state.controllViewType}
+      dataUrl={this.state.dataUrl}
+    />
+  )
+}else{
+  renderView = <UploadView/>
+}
+```
+
+となります。
+
+これで最初はアップロード画面がレンダリングされて、画像がアップロードされるとstateの`isUploaded`が`true`になるので、`EditView`へ切り替わります。
+
+これで編集画面の実装が終わりました。
+
 ## シェア画面を作ろう
 
 最後にシェア画面を作っていきます。
@@ -631,6 +1100,63 @@ _reload = () => {
 埋め込むテキストなどは、自由につくって頂いて結構です！
 
 `_reload`は、もう一度最初からするためのボタンです。
+
+では、つくった`ShareView`を`App`コンポーネントにマージして完成になります。
+
+まずインポートを追加します。
+
+```js
+// App.jsx
+import ShareView from "./share/ShareView.jsx"
+```
+
+次に`renderView`に代入しないといけません。
+
+if文を書き換えます。
+
+```js
+// App.jsx
+if(this.state.isUploaded){
+  renderView = (
+    <EditView
+      currentEdit={this.state.currentEdit}
+      sliderValues={this.state.sliderValues}
+      canvasState={this.state.canvasState}
+      ctrlViewType={this.state.controllViewType}
+      dataUrl={this.state.dataUrl}
+    />
+  )
+}else{
+  renderView = <UploadView/>
+}
+```
+
+となっている部分に新しくif文を書き加えます。
+
+```js
+// App.jsx
+if(this.state.isSaved){
+  renderView = <ShareView shareImage={this.state.dataUrl} />
+}else{
+  if(this.state.isUploaded){
+    renderView = (
+      <EditView
+        currentEdit={this.state.currentEdit}
+        sliderValues={this.state.sliderValues}
+        canvasState={this.state.canvasState}
+        ctrlViewType={this.state.controllViewType}
+        dataUrl={this.state.dataUrl}
+      />
+    )
+  }else{
+    renderView = <UploadView/>
+  }
+}
+```
+
+これでstateの`isSaved`が`false`の場合は今まで通りの挙動で、一番最後に画像を保存したら`isSaved`が`true`になるので、`ShareView`がレンダリングされる仕組みになっています。
+
+これで最後まで実装できたかと思います。
 
 ---
 
