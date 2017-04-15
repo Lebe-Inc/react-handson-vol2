@@ -6,7 +6,7 @@
 
 ```
 このREADMEは、4/14に開催した「2時間で学ぶ React ハンズオン in Osaka Vol.2」の教材になります。
-URL: [https://sha.connpass.com/event/53105/](https://sha.connpass.com/event/53105/)
+URL: https://sha.connpass.com/event/53105/
 ```
 
 ## 使うライブラリ
