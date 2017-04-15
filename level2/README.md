@@ -1,12 +1,12 @@
 # 2時間で学ぶReactハンズオン Level2
 
-[2時間で学ぶReactハンズオン vol2 connpass](https://sha.connpass.com/event/53105/)
+[2時間で学ぶ React ハンズオン in Osaka Vol.2](https://sha.connpass.com/event/53105/)
 
 **Level2ではInstagramのような画像編集WebアプリをSPAで開発します。**
 
 ```
-このREADMEは、4/14に開催した「2時間で学ぶReactハンズオン vol2」の教材になります。
-URL: https://sha.connpass.com/event/53105/
+このREADMEは、4/14に開催した「2時間で学ぶ React ハンズオン in Osaka Vol.2」の教材になります。
+URL: [https://sha.connpass.com/event/53105/](https://sha.connpass.com/event/53105/)
 ```
 
 ## 使うライブラリ
