@@ -12,7 +12,9 @@ import {white,indigoA200} from 'material-ui/styles/colors'
 
 import AppActions from "../../actions/AppActions"
 
-export default class EditView extends React.Component {
+import PropTypes from 'prop-types';
+
+class EditView extends React.Component {
 
   constructor(props) {
     super(props)
@@ -60,3 +62,26 @@ export default class EditView extends React.Component {
   }
 
 }
+
+EditView.propTypes = {
+  image: PropTypes.object,
+  currentEdit: PropTypes.shape({
+    type: PropTypes.string,
+    value: PropTypes.number
+  }),
+  canvasState: PropTypes.shape({
+    brightness: PropTypes.number.isRequired,
+    contrast: PropTypes.number.isRequired,
+    hue: PropTypes.number.isRequired,
+    saturation: PropTypes.number.isRequired
+  }),
+  dataUrl: PropTypes.string.isRequired,
+  ctrlViewType: PropTypes.string.isRequired,
+  sliderValues: PropTypes.shape({
+    type: PropTypes.string,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired
+  })
+}
+
+export default EditView

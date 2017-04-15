@@ -2,7 +2,9 @@ import React from "react"
 
 import AppActions from "../../../../actions/AppActions"
 
-export default class EditItem extends React.Component{
+import PropTypes from 'prop-types';
+
+class EditItem extends React.Component{
 
   render(){
     return(
@@ -21,3 +23,12 @@ export default class EditItem extends React.Component{
   }
 
 }
+
+EditItem.propTypes = {
+  displayEditName: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  max: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired
+}
+
+export default EditItem

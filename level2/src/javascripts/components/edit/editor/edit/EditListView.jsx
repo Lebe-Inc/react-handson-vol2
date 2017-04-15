@@ -4,10 +4,6 @@ import EditItem from "./EditItem.jsx"
 
 export default class EditListView extends React.Component{
 
-  constructor(props){
-    super(props)
-  }
-
   render(){
     return(
       <ul className="grid-list">
