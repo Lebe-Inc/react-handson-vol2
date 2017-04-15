@@ -1,12 +1,12 @@
 # 2時間で学ぶReactハンズオン Level2
 
-[2時間で学ぶReactハンズオン vol2 connpass](https://iotlt.connpass.com/event/55251/)
+[2時間で学ぶReactハンズオン vol2 connpass](https://sha.connpass.com/event/53105/)
 
 **Level2ではInstagramのようなフィルターのSPAを作ります。**
 
 ```
 このREADMEは、4/14に開催した「2時間で学ぶReactハンズオン vol2」の教材になります。
-URL: https://iotlt.connpass.com/event/55251/
+URL: https://sha.connpass.com/event/53105/
 ```
 
 ## 使うライブラリ
