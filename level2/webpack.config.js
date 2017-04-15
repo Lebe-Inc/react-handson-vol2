@@ -33,7 +33,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({ "global.GENTLY": false }),
+    new webpack.DefinePlugin({
+      "global.GENTLY": false,
+      "process.env": {
+        "NODE_ENV": JSON.stringify("production")
+      }
+    }),
     new ExtractTextPlugin("style.css")
   ]
 };
