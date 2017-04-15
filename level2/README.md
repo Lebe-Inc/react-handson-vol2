@@ -1,12 +1,12 @@
 # 2時間で学ぶReactハンズオン Level2
 
-[2時間で学ぶReactハンズオン vol2 connpass](https://iotlt.connpass.com/event/55251/)
+[2時間で学ぶReactハンズオン vol2 connpass](https://sha.connpass.com/event/53105/)
 
 **Level2ではInstagramのようなフィルターのSPAを作ります。**
 
 ```
 このREADMEは、4/14に開催した「2時間で学ぶReactハンズオン vol2」の教材になります。
-URL: https://iotlt.connpass.com/event/55251/
+URL: https://sha.connpass.com/event/53105/
 ```
 
 ## 使うライブラリ
@@ -110,7 +110,7 @@ import injectTapEventPlugin from "react-tap-event-plugin"
 injectTapEventPlugin()
 
 import App from "./components/App.jsx"
- 
+
 render(
   <App/>,
   document.getElementById("react")
@@ -232,13 +232,13 @@ export default AppActions
 import React from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
-export default class App exntends React.Component {
+export default class App extends React.Component {
 
   render(){
-  
+
     var renderView = <h1>Hello World</h1>
-  
-    reutrn(
+
+    return(
       <MuiThemeProvider>
         {renderView}
       </MuiThemeProvider>
@@ -318,12 +318,12 @@ export default class UploadView extends React.Component{
 ```components/upload/UploadView.jsx
 _onUploaded = e => {
   var fileData = e.target.files[0]
-  
+
   if(!fileData.type.match("image.*")){
     alert("画像を選択してください。")
     return
   }
-  
+
   var reader = new FileReader()
   reader.readAsDataURL(fileData)
   reader.onload = () => {
@@ -381,26 +381,7 @@ canvasをレンダリングするViewを1つだけにしておくことで、管
 ```js
 // CanvasView.jsx
 import React from "react"
-```
-
-今回はReactだけをインポートします。
-
-このコンポーネントはstateとして、canvasを持ちます。
-
-なのでコンストラクタにcanvasを持たせていきたいと思います。
-
-```js
-// CanvasView.jsx
-export default class CanvasView extends React.Component{
-
-  constructor(props){
-    super(props)
-    this.state = {
-      canvas: null
-    }
-  }
-
-}
+import AppActions from "../../../actions/AppActions"
 ```
 
 次に一番最初にレンダリングをするために、Reactのライフサイクルである`componentDidMount`を使っていきます。
@@ -412,70 +393,62 @@ export default class CanvasView extends React.Component{
 componentDidMount(){
   var canvas = this.refs.canvas
   Caman.allowRevert = false
-  
-  this.setState({ canvas: canvas })
-  this._resetCanvas(canvas)
+
+  this._initCanvas(canvas)
 }
 ```
 
-`_resetCanvas`というメソッドがでてきました。
+`_initCanvas`というメソッドがでてきました。
 
-これはHTMLのcanvasを一度キレイにするものです。
+これはcanvasを初期化するためのメソッドです。
 
-では先に、`_resetCavnas`を実装していきたいと思います。
+では先に、`_initCanvas `を実装していきたいと思います。
 
 ```js
 // CanvasView.jsx
-_resetCanvas = () => {
-
+_initCanvas = () => {
   var self = this
+  var image = this.props.image
   
   if(!image || image.width < 1){
     image = new Image
-    image.onload = () => {
-      setTimeout(()=>{
-        self._drawCanvas(image,canvas)
-      }, 100)
-    }
     image.src = this.props.dataUrl
-    return
+    image.onload = ()=> {
+      AppActions.setImage(image)
+      self._clearCanvas(image,canvas)
+    }
   }
-  
-  this._drawCanvas(image,canvas)
-
 }
 ```
 
 最初に`self`に`this`を代入してるのは、コールバックの中でReactの`this`を追えなくなるためです。
 
-`_drawCanvas`は画像自体をcanvasに展開するためのメソッドです。
+`_clearCanvas`は画像自体をcanvasに展開するためのメソッドです。
 
 ifは、一番最初だけ処理をしたりレンダリングに失敗している場合に処理をするために書いています。
 
-ifの中ですが、imageをロードしてその中で`_drawCanvas`を呼んでいますが`setTimeout`をつかって100ミリ秒のウエイトをかけています。
-
-これはブラウザ間でcanavsを構成する順番がシングルスレッドかマルチスレッドかによって、タイミングが変わるので、故意に100ミリ秒のウエイトをかけています。
-
 `image.src`はずっと変わらないので、最初にだけ代入していれば大丈夫です。
 
-では、`_drawCanvas`を実装していきましょう。
+では、`_clearCanvas`を実装していきましょう。
 
 ```js
 // CanvasView.jsx
-_drawCanvas = (image,canvas) => {
+_clearCanvas = (image,canvas) => {
 
-  var
-    ctx = canvas.getContext("2d") 
-    dstWidth = image.width
-    dstHeight = image.height
-    
-  if(image.width > 640){
-    dstWidth = 640
-    dstHeight = Math.round(dstWidth / image.width * image.height)
+  if(image){
+    var
+      ctx = canvas.getContext("2d")
+      dstWidth = image.width
+      dstHeight = image.height
+
+    if(image.width > 640){
+      dstWidth = 640
+      dstHeight = Math.round(dstWidth / image.width * image.height)
+    }
+    canvas.width = dstWidth
+    canvas.height = dstHeight
+    ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
   }
-  canvas.width = dstWidth
-  canvas.height = dstHeight
-  ctx.drawImage(image,0,0,image.width,image.height,0,0,dstWidth,dstHeight)
 }
 ```
 
@@ -490,6 +463,19 @@ _drawCanvas = (image,canvas) => {
 これで縦横の比を維持したまま、小さいサイズの画像をつくることができました。
 
 この幅と高さを`canvas`自体に教えてあげて、`ctx`をつかって画像をレンダリングします。
+
+では、`canvasView`のレンダリングするcanvas要素を書き足したいと思います。
+
+```js
+// CanvasView.jsx
+render(){
+  return(
+    <canvas id="canvas" ref="canvas"></canvas>
+  )
+}
+```
+
+これがcanvas本体になります。
 
 ### Controllerを作ろう
 
@@ -581,13 +567,13 @@ render(){
   var
     defaultValue = null,
     self = this
-  
+
   Object.keys(this.props.canvasState).map( type => {
     if(self.props.slideValues.type == type){
       defaultValue = self.props.canvasState[type]
     }
   })
-  
+
   return(...)
 }
 ```
@@ -645,10 +631,10 @@ render(){
         sec: "完了"
       }
     }
-    
-  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+
+  renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues}/>
   menuText = menuState.sliderMenu
-  
+
   return(...)
 }
 ```
@@ -683,7 +669,7 @@ import React from "react"
 
 import AppActions from "../../../../actions/AppActions"
 
-export defualt class EditItem exntends React.Component{
+export default class EditItem extends React.Component{
 
   render(){
     return(
@@ -732,25 +718,25 @@ render(){
     <ul className="grid-list">
       <EditItem
         displayEditName="明るさ"
-        type="brightness",
+        type="brightness"
         min={-100}
         max={100}
       />
       <EditItem
         displayEditName="コントラスト"
-        type="contrast",
+        type="contrast"
         min={-100}
         max={100}
       />
       <EditItem
         displayEditName="色合い"
-        type="hue",
+        type="hue"
         min={0}
         max={100}
       />
       <EditItem
         displayEditName="彩度"
-        type="saturation",
+        type="saturation"
         min={-100}
         max={100}
       />
@@ -788,10 +774,10 @@ render(){
         sec: "完了"
       }
     }
-    
-  renderView = <SliderView canvasState={this.props.canvasstate} sliderValues={this.props.sliderValues}/>
+
+  renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues}/>
   menuText = menuState.sliderMenu
-  
+
   return(...)
 }
 ```
@@ -814,15 +800,15 @@ render(){
         sec: "完了"
       }
     }
-  
+
   if(this.props.ctrlViewType == "select"){
     renderView = <EditListView/>
-    menuText = menuState.defualtMenu
+    menuText = menuState.defaultMenu
   }else{
     renderView = <SliderView canvasState={this.props.canvasState} sliderValues={this.props.sliderValues} />
     menuText = menuState.sliderViewMenu
   }
-  
+
   return(...)
 }
 ```
@@ -901,11 +887,11 @@ render(){
 // EditView.jsx
 _onBackButtonClick = e => {
   e.preventDefault()
-  if(confirm("操作を中断しトップページへ戻りますか？")) AppActions.editCancel()
+  if(confirm("操作を中断しトップページへ戻りますか？")) AppActions.restart()
 }
 ```
 
-このイベントではcanvasの内容を全て削除しないといけないので、**actions**の`editCancel`を実行します。
+このイベントでは全てのエフェクトを削除しcanvasをキレイにしてimageを消去しないといけないので、**actions**の`restart`を実行します。
 
 では、`onRightIconButtonTouchTap`のほうも実装していきます。
 
@@ -1008,7 +994,7 @@ render = <UploadView/>
 
 ```js
 // App.jsx
-var render = null
+var renderView = null
 
 if(this.state.isUploaded){
   renderView = (
@@ -1046,6 +1032,8 @@ import React from "react"
 import {indigoA200} from 'material-ui/styles/colors'
 import AppBar from "material-ui/AppBar"
 import RaisedButton from 'material-ui/RaisedButton'
+
+import AppActions from "../../actions/AppActions"
 ```
 
 今までと、あまり変わらないと思います。
@@ -1086,13 +1074,11 @@ _share = () => {
     text = "2時間で学ぶReactハンズオンのLavel2をつくりきったよ！",
     url = "https://sha.connpass.com/event/53105/",
     hashtags = "reactTwoHourHandson"
-  
+
   window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
 }
 
-_reload = () => {
-  window.location.reload()
-}
+_reload = () => AppActions.restart()
 ```
 
 `_share`というメソッドは、Twitterにシェアするためのボタンです。
