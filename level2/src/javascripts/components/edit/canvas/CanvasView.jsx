@@ -2,7 +2,9 @@ import React from "react"
 
 import AppActions from "../../../actions/AppActions"
 
-export default class CanvasView extends React.Component {
+import PropTypes from 'prop-types';
+
+class CanvasView extends React.Component {
 
   constructor(props){
     super(props)
@@ -81,3 +83,21 @@ export default class CanvasView extends React.Component {
   }
 
 }
+
+CanvasView.propTypes = {
+  image: PropTypes.object,
+  isEditing: PropTypes.bool.isRequired,
+  currentEdit: PropTypes.shape({
+    type: PropTypes.string,
+    value: PropTypes.number
+  }),
+  canvasState: PropTypes.shape({
+    brightness: PropTypes.number.isRequired,
+    contrast: PropTypes.number.isRequired,
+    hue: PropTypes.number.isRequired,
+    saturation: PropTypes.number.isRequired
+  }),
+  dataUrl: PropTypes.string.isRequired
+} 
+
+export default CanvasView

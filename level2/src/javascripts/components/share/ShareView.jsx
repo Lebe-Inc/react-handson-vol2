@@ -6,7 +6,9 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import AppActions from "../../actions/AppActions"
 
-export default class ShareView extends React.Component{
+import PropTypes from 'prop-types';
+
+class ShareView extends React.Component{
 
   constructor(props){
     super(props)
@@ -42,3 +44,9 @@ export default class ShareView extends React.Component{
   _reload = () => AppActions.restart()
 
 }
+
+ShareView.propTypes = {
+  shareImage: PropTypes.string.isRequired
+}
+
+export default ShareView

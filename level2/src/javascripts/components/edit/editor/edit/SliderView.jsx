@@ -4,7 +4,9 @@ import Slider from 'material-ui/Slider'
 
 import AppActions from "../../../../actions/AppActions"
 
-export default class SliderView extends React.Component {
+import PropTypes from 'prop-types';
+
+class SliderView extends React.Component {
 
   constructor(props) {
     super(props)
@@ -43,3 +45,19 @@ export default class SliderView extends React.Component {
   }
 
 }
+
+SliderView.propTypes = {
+  canvasState: PropTypes.shape({
+    brightness: PropTypes.number.isRequired,
+    contrast: PropTypes.number.isRequired,
+    hue: PropTypes.number.isRequired,
+    saturation: PropTypes.number.isRequired
+  }),
+  sliderValues: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired
+  })
+}
+
+export default SliderView

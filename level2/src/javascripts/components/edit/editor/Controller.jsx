@@ -5,7 +5,9 @@ import EditListView from "./edit/EditListView.jsx"
 
 import AppActions from "../../../actions/AppActions"
 
-export default class Controller extends React.Component{
+import PropTypes from 'prop-types';
+
+class Controller extends React.Component{
 
   constructor(props) {
     super(props)
@@ -54,3 +56,19 @@ export default class Controller extends React.Component{
   }
 
 }
+
+Controller.propTypes = {
+  ctrlViewType: PropTypes.string.isRequired,
+  canvasState: PropTypes.shape({
+    brightness: PropTypes.number.isRequired,
+    contrast: PropTypes.number.isRequired,
+    hue: PropTypes.number.isRequired,
+    saturation: PropTypes.number.isRequired
+  }),
+  currentEdit: PropTypes.shape({
+    type: PropTypes.string,
+    value: PropTypes.number
+  })
+}
+
+export default Controller
