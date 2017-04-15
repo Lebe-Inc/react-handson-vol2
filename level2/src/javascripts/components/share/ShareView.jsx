@@ -4,6 +4,8 @@ import {indigoA200} from 'material-ui/styles/colors'
 import AppBar from "material-ui/AppBar"
 import RaisedButton from 'material-ui/RaisedButton'
 
+import AppActions from "../../actions/AppActions"
+
 export default class ShareView extends React.Component{
 
   constructor(props){
@@ -37,8 +39,6 @@ export default class ShareView extends React.Component{
     window.open("https://twitter.com/intent/tweet?text="+text+"&url="+url+"&hashtags="+hashtags,"window","width=1000, height=400, menubar=no, toolbar=no, scrollbars=yes")
   }
 
-  _reload = () => {
-    window.location.reload()
-  }
+  _reload = () => AppActions.restart()
 
 }
