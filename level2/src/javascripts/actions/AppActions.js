@@ -96,6 +96,23 @@ var AppActions = {
       actionType: AppConstants.DO_SAVE,
       data: data
     })
+  },
+
+  setImage(image){
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SET_IMAGE,
+      image: image
+    })
+  },
+
+  /**
+   *  restart
+   *  SPAをリスタートする
+   */
+  restart(){
+    AppDispatcher.dispatch({
+      actionType: AppConstants.RESTART
+    })
   }
 
 }
