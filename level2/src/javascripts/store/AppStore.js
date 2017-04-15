@@ -10,12 +10,17 @@ const DEFAULT_CURRENT_EDIT_TYPE = null
 const DEFAULT_CANVAS_EFFECT_VALUE = 0
 const DEFAULT_SLIDER_MIN_MAX = 0
 const DEFAULT_CONTROLLER_TYPE = "select"
+const DEFAULT_UPLOADED_STATE = false
+const DEFAULT_SAVED_STATE = false
+const DEFAULT_DATA_URL = null
+const DEFAULT_IMAGE = null
 
 // application data store
 var _data = {
-  isUploaded: false, // 画像がアップロードされているか
-  isSaved: false, // 編集を終えたか
-  dataUrl: null, // 画像のエンコード済みURL
+  isUploaded: DEFAULT_UPLOADED_STATE, // 画像がアップロードされているか
+  isSaved: DEFAULT_SAVED_STATE, // 編集を終えたか
+  dataUrl: DEFAULT_DATA_URL, // 画像のエンコード済みURL
+  image: DEFAULT_IMAGE,
   controllViewType: DEFAULT_CONTROLLER_TYPE, // 今のコントローラの状態
   sliderValues: {
     type: null, // slider type
@@ -41,18 +46,8 @@ var _data = {
  *  @param { string } dataUrl
  */
 var onUploaded = dataUrl => {
-  _data.isUploaded = true
+  _data.isUploaded = !DEFAULT_UPLOADED_STATE
   _data.dataUrl = dataUrl
-}
-
-/**
- *  editCancel
- *  canvasの編集をキャンセル
- */
-var editCancal = () => {
-  _data.isUploaded = false
-  _data.dataUrl = null
-  resetEffect()
 }
 
 /**
@@ -119,8 +114,28 @@ var resetEffect = () => {
  *  @param { string } data
  */
 var doSave = data => {
-  _data.isSaved = true
+  _data.isSaved = !DEFAULT_SAVED_STATE
   _data.dataUrl = data
+}
+
+/**
+ *  setImage
+ *  imageをstoreにセットする
+ *
+ *  @param {  } image
+ */
+var setImage = image => _data.image = image
+
+/**
+ *  restart
+ *  SPAをリスタートする
+ */
+var restart = () => {
+  _data.isUploaded = DEFAULT_UPLOADED_STATE
+  _data.isSaved = DEFAULT_SAVED_STATE
+  _data.dataUrl = DEFAULT_DATA_URL
+  _data.image = DEFAULT_IMAGE
+  resetEffect()
 }
 
 var AppStore = assign({},EventEmitter.prototype,{
@@ -154,10 +169,6 @@ AppDispatcher.register( action => {
       onUploaded(action.dataUrl)
       break
 
-    case AppConstants.EDIT_CANCEL:
-      editCancal()
-      break
-
     case AppConstants.CHANGE_CTRL_VIEW:
       changeCtrlView(action.renderType,action.sliderType,action.min,action.max)
       break
@@ -177,6 +188,14 @@ AppDispatcher.register( action => {
     case AppConstants.DO_SAVE:
       doSave(action.data)
       break
+
+    case AppConstants.SET_IMAGE:
+      setImage(action.image)
+      break
+
+    case AppConstants.RESTART:
+      restart()
+      break;
 
     default:
       throw new Error("switch miss.")

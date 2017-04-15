@@ -31,6 +31,7 @@ export default class EditView extends React.Component {
       />
         <div className="editView">
           <CanvasView
+            image={this.props.image}
             currentEdit={this.props.currentEdit}
             canvasState={this.props.canvasState}
             dataUrl={this.props.dataUrl}
@@ -49,7 +50,7 @@ export default class EditView extends React.Component {
 
   _onBackButtonClick = e => {
     e.preventDefault()
-    if(confirm("操作を中断しトップページへ戻りますか？")) AppActions.editCancel()
+    if(confirm("操作を中断しトップページへ戻りますか？")) AppActions.restart()
   }
 
   _onSave = e => {

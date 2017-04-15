@@ -40,6 +40,7 @@ export default class App extends React.Component {
         // 画像がアップロードされているか
         renderView = (
           <EditView
+            image={this.state.image}
             currentEdit={this.state.currentEdit}
             sliderValues={this.state.sliderValues}
             canvasState={this.state.canvasState}
