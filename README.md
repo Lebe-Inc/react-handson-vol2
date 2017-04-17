@@ -26,6 +26,51 @@ Reactは FacebookMessengerやInstagramなどで、ネイティブアプリと同
 - インストール方法がわからないという方は当日スタッフにお声かけ下さい。
 - お気に入りのエディタ（Sublime Text、Atomなど）
 
+## 環境の構築
+
+このハンズオンでは、npmを使うのでNode.jsをインストールしておくことは必須になります。
+
+公式サイトからインストールする方法とバージョン管理ができるマネージャーをインストールして、Node.jsのバージョンを管理する方法の2通りあります。
+
+推奨は後者のマネージャーをインストールして、Node.jsのバージョンを管理する方法でNode.jsはアップデートがまだまだされているものなので、最新バージョンがすぐ使えるようにするには後者のほうがいいと思います。
+
+まず前者ですが、Node.jsの公式サイト[https://nodejs.org](https://nodejs.org)から直接ダウンロードしてしましましょう。
+
+公式サイトには他に、パッケージマネージャーを使ったインストール方法も書いています（macOSでいうhomebrewなどを使ったインストール方法です。）
+
+[https://nodejs.org/ja/download/package-manager/](https://nodejs.org/ja/download/package-manager/)
+
+後者であるマネージャーをインストールしてNode.jsをインストールする方法ですが、環境によってマネージャーも違うので`mac`,`windows`,`linux`の3つに分けてインストール方法を説明していきたいと思います。
+
+### macOS
+
+macOSでは`nvm`や`nodebrew`を使ってNode.jsのバージョン管理をするのが定番です。
+
+[Macにnvm + Node.jsをインストールする](http://qiita.com/dribble13/items/e895208727c85ef9bc52)
+
+[MacにNode.js環境を作る(nodebrew)](http://qiita.com/saekis/items/d580d1c2ae4f32a6ae99)
+
+
+### Windows
+
+Windowsでは、`nodist`を使うのがいいので`nodist`をインストールしていきます。
+
+[nodistでNode.jsをバージョン管理](http://qiita.com/satoyan419/items/56e0b5f35912b9374305)
+
+### Linux
+
+Linuxでも`nvm`を使うとよいです。
+
+[CentOS6にNode.jsをインストールする](http://qiita.com/ozawan/items/86ca7551d59005128892)
+
+それぞれのツールを使い、Node.jsをインストールしたらバージョンを確認してください。
+
+```bash
+$ node -v
+```
+
+4以上のバージョンの方はそのままで大丈夫ですが、0.x.xなどの方はそれぞれのツールを使いNode.jsのバージョンをあげておいてください。
+
 ## ハンズオンの流れ
 
 ハンズオンスタート後、課題を一緒に開発していきます。 課題は初心者向け（Lv1）、中級者向け（Lv2）の２パターンを用意します。中級者以上はLv1を飛ばしてご参加ください。
