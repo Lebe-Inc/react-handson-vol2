@@ -1,0 +1,111 @@
+body, html {
+  width: 100%;
+  height: 100%; }
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; }
+
+.uploadButton {
+  display: block !important;
+  width: 40%;
+  margin: 0 auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%); }
+  .uploadButton input {
+    display: none; }
+
+.editView {
+  width: 100%;
+  height: 100%;
+  background-color: #424242;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500; }
+
+#canvas {
+  max-width: 100%;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-75%); }
+
+.controller {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 900;
+  background-color: white;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 3rem; }
+  .controller .grid-list {
+    display: inline-table;
+    max-width: 100%;
+    padding: 10px; }
+    .controller .grid-list .grid-item {
+      display: table-cell;
+      min-width: 10rem;
+      max-width: 10rem;
+      padding: 0 1.5px;
+      position: relative; }
+      .controller .grid-list .grid-item .grid-item--title {
+        text-align: center;
+        font-size: 0.8rem;
+        margin: 10px 0;
+        color: rgba(0, 0, 0, 0.54);
+        font-weight: bold; }
+      .controller .grid-list .grid-item .img {
+        width: 60%;
+        margin: 0 auto;
+        box-shadow: 0px 0px 1px black;
+        border-radius: 50%;
+        overflow: hidden; }
+        .controller .grid-list .grid-item .img img {
+          display: block;
+          width: 100%; }
+  .controller .grid-item.active .grid-item--title {
+    color: rgba(0, 0, 0, 0.87); }
+  .controller .menu {
+    width: 100%;
+    display: flex;
+    padding: 5px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: white; }
+    .controller .menu li {
+      list-style: none;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: no-wrap;
+      width: 50%;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.54);
+      font-weight: bold;
+      cursor: pointer; }
+    .controller .menu li.active {
+      color: rgba(0, 0, 0, 0.87); }
+
+.slider {
+  width: 80%;
+  padding: 2rem 0;
+  margin: 0 auto; }
+
+.img {
+  width: 100%;
+  margin: 3rem 0; }
+  .img img {
+    display: block;
+    width: 100%; }
+
+.share-button {
+  display: block !important;
+  width: 40%;
+  margin: 1.5rem auto; }
