@@ -21,19 +21,19 @@ package.json
 webpack.config.js
 ```
 
-___dist/___はコンパイル後のファイルがはいる、アプリケーション本体になる場所です。
+*dist/*はコンパイル後のファイルがはいる、アプリケーション本体になる場所です。
 
-___src/___はアプリケーションをつくるのに必要な部分です。コンポーネント本体などもここにはいります。
+*src/*はアプリケーションをつくるのに必要な部分です。コンポーネント本体などもここにはいります。
 
-___.babelrc___ですが、babelというのはReactのJSX記法をJSにトランスパイルするのに必要なトランスパイラーです。
+*.babelrc*ですが、babelというのはReactのJSX記法をJSにトランスパイルするのに必要なトランスパイラーです。
 
-そのbabelの設定ファイルが___.babelrc___です。
+そのbabelの設定ファイルが*.babelrc*です。
 
-___package.json___は、`npm init`すると自動でつくられるファイルで、npmでインストールしたものを管理するために必要になります。
+*package.json*は、`npm init`すると自動でつくられるファイルで、npmでインストールしたものを管理するために必要になります。
 
-___webpack.config.js___ですが、今回のWebアプリをつくるのに、webpackという技術を使っています。`import`などを使って複数のファイルを連結して、それを1つのファイルとして吐き出してくれる技術です。
+*webpack.config.js*ですが、今回のWebアプリをつくるのに、webpackという技術を使っています。`import`などを使って複数のファイルを連結して、それを1つのファイルとして吐き出してくれる技術です。
 
-___webpack.config.js___は、webpack2系に合わせてかいていますので自分のもっているwebpackのバージョンを確認した上で使ってください。
+*webpack.config.js*は、webpack2系に合わせてかいていますので自分のもっているwebpackのバージョンを確認した上で使ってください。
 
 ## 今回使うモジュール・ライブラリ
 
@@ -244,6 +244,189 @@ _data = {
 ReactはFluxアーキテクチャの中でも**view**にあたる部分のライブラリですが、役割は一番重い仕事になります。
 
 コンポーネントをつくっていくには、いま自分がなにを作っているのかを把握し続けることが大切になるので、今回つくったもののコンポーネントを例にしていきたいと思います。
+
+### upload
+
+まずはアップロード画面です。
+
+コンポーネントは2つしかなく、簡潔にかけると思います。
+
+まずはヘッダー部分です。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/upload-header.png)
+
+```js
+// UploadView.jsx
+<AppBar
+  title="Filter"
+  iconClassNameLeft="muidocs-icon-navigation-expand-more"
+  iconClassNameRight="muidocs-icon-navigation-expand-more"
+  style={{"backgroundColor": indigoA200}}
+/>
+```
+
+AppBarはmaterial-uiが提供してくれるコンポーネントなので、非常に簡単に配置することが出来ます。
+
+次にアップロードボタンです。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/upload-button.png)
+
+```js
+// UploadView.jsx
+<RaisedButton
+  containerElement='label'
+  label="Select Image"
+  backgroundColor={pinkA400}
+  labelColor={white}
+  className="uploadButton"
+>
+  <input type="file" onChange={this._onUploaded}/>
+</RaisedButton>
+```
+
+この`RaiseButton`もmaterial-uiのコンポーネントになります。ファイルをアップロードするために、`<input>`が存在します。
+
+ここではファイルがアップロードされたときに、`this._onUploaded`を呼ぶようになっています。
+
+`_onUploaded`は**actions**の`uploaded`メソッドを使って画像のアップロードをアプリケーションに伝えます。
+
+### edit
+
+次に編集画面を説明していきます。
+
+まず共通部分である`CanvasView.jsx`です。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-select-canvas.png)
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-slider-canvas.png)
+
+```js
+// CanvasView.jsx
+<canvas id="canvas" ref="canvas"></canvas>
+```
+
+単純なcanvasなのでjsxのHTML部分はとても簡潔になります。
+
+このように、別の画面だけど同じ表示部分がある場合にコンポーネントは実力を発揮してきます。
+
+次に、下のボタンの部分です。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-select-buttons.png)
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-slider-buttons.png)
+
+```js
+// Controller.jsx
+<ul className="menu">
+  <li onClick={this._onCancel}>{menuText.first}</li>
+  <li onClick={this._onSave} className="active">{menuText.sec}</li>
+</ul>
+```
+
+実はこのボタンは別のものではなく、同じコンポーネントになっています。
+
+今回は、FilterとEditを切り替える必要がなかったので`onClick`の関数はキャンセルと完了の時の実装にしています。
+
+`onSave`は、**actions**の`saveEffect`メソッドを呼び編集の値をcanvasのエフェクト状態の部分へコピーしています。
+
+最後にこの画面で唯一コンポーネントを切り替えて使うスライダーとセレクト画面の実装部分です。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-select-controller.png)
+
+```js
+// EditListView.jsx
+<ul className="grid-list">
+  <EditItem
+    displayEditName="明るさ"
+    type="brightness"
+    min={-100}
+    max={100}
+  />
+  <EditItem
+    displayEditName="コントラスト"
+    type="contrast"
+    min={-100}
+    max={100}
+  />
+  <EditItem
+    displayEditName="色合い"
+    type="hue"
+    min={0}
+    max={100}
+  />
+  <EditItem
+    displayEditName="彩度"
+    type="saturation"
+    min={-100}
+    max={100}
+  />
+</ul>
+```
+
+エフェクトを選択する画面は、`EditListView`としています。
+
+この中に、`EditItem`が一つ一つ存在するようにつくります。
+
+```js
+// EditItem.jsx
+<li className="grid-item" onClick={this._onSelect}>
+  <p className="grid-item--title">{this.props.displayEditName}</p>
+  <div className="img">
+    <img src={"images/"+ this.props.type +".png"}/>
+  </div>
+</li>
+```
+
+このエフェクトのどれかを選択する画面になります。
+
+エフェクトを選ぶとそのエフェクトに合わせたスライダーの画面へと切り替わります。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/edit-slider-controller.png)
+
+```js
+// SliderView.jsx
+<Slider
+  onChange={this._onChangeValue}
+  onDragStop={this._onDragStop}
+  min={this.props.sliderValues.min}
+  max={this.props.sliderValues.max}
+  defaultValue={defaultValue}
+  step={1}
+/>
+```
+
+スライダーはmaterial-uiのものなので、配置するだけで使うことができます。
+
+`onChange`は、スライダーを動かしてる間にeventとvalueを取得することができて、`onDragStop`はeventだけが取得できます。
+
+`onChange`毎にcanvasを更新していては、処理が重たくなってしまうので`onDragStop`でイベントだけをとって、valueをもとにcanvasを実行します。
+
+### share
+
+最後にシェア画面をつくっていきます。
+
+シェア画面は画像の要素と、ボタンを配置します。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/share-image.png)
+
+```js
+<img src={this.props.shareImage}/>
+```
+
+画像自体は、`img`要素で出力しています。srcはcanvasでエフェクトをかけた画像を書き出してbase64でエンコードした`dataUrl`を使います。
+
+![](https://raw.githubusercontent.com/Lebe-Inc/react-handson-vol2/master/screen_shots/components/share-button.png)
+
+```js
+<RaisedButton label="SHARE" primary={true} className="share-button" onClick={this._share}/>
+<RaisedButton label="もう一度" secondary={true} className="share-button" onClick={this._reload}/>
+```
+
+ボタンはmaterial-uiを使っているので、配置するだけになります。
+
+`_reload`は**actions**の`reset`メソッドを実行して、全てをクリアにします。
+
+`_share`は`window.open`を使ってTwitterへ投稿する小窓を出す実装にしています。
 
 ## canvasを扱うにあたっての注意
 
