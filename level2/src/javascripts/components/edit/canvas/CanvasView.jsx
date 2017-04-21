@@ -50,15 +50,14 @@ class CanvasView extends React.Component {
   }
 
   _initCanvas = (canvas) => {
-    var self = this
     var image = this.props.image
 
     if(!image || image.width < 1){
       image = new Image
       image.src = this.props.dataUrl
-      image.onload = ()=>{
+      image.onload = ()=> {
         AppActions.setImage(image)
-        self._clearCanvas(image,canvas)
+        this._clearCanvas(image,canvas)
       }
     }
   }
